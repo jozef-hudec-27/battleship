@@ -1,6 +1,6 @@
 /* eslint-disable operator-linebreak */
 
-import Ship from './ship'
+import Ship, { ShipService } from './ship'
 
 const GameboardService = (() => {
   const display = (board) => board.map((boardRow) => boardRow.map((pos) => (pos === 0 ? 0 : 1)))
@@ -70,7 +70,14 @@ export default function Gameboard() {
     })
   }
 
+  const receiveAttack = (row, col) => {
+    if (board[row][col]) {
+      const ship = board[row][col]
+      ship.hit(ShipService.hitPosition(row, col, board))
+    }
+  }
+
   placeShipsInitial()
 
-  return { board }
+  return { board, receiveAttack }
 }
