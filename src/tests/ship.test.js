@@ -8,6 +8,7 @@ describe('Ship factory function', () => {
     expect(ship.length).toBe(4)
     expect(ship.hits).toEqual([false, false, false, false])
     expect(ship.isSunk()).toBe(false)
+    expect(ship.isVertical).toBe(false)
   })
 
   test('hit() function increases the number of hits in the ship', () => {
