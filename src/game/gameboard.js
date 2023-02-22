@@ -2,7 +2,7 @@
 
 import Ship, { ShipService } from './ship'
 
-const GameboardService = (() => {
+export const GameboardService = (() => {
   const display = (board) => board.map((boardRow) => boardRow.map((pos) => (pos === 0 ? 0 : 1)))
 
   const positionValidFor = (ship, row, col, board) => {
@@ -31,7 +31,19 @@ const GameboardService = (() => {
     return true
   }
 
-  return { display, positionValidFor }
+  const allShipsSunkIn = (board) => {
+    for (let row = 0; row < board.length; row++) {
+      for (let col = 0; col < board[0].length; col++) {
+        if (board[row][col] && !ShipService.isSunk(board[row][col])) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
+  return { display, positionValidFor, allShipsSunkIn }
 })()
 
 export default function Gameboard() {
@@ -47,6 +59,8 @@ export default function Gameboard() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]
+
+  const missedAttacks = []
 
   const placeShip = (ship) => {
     let row = Math.floor(Math.random() * 10)
@@ -74,6 +88,8 @@ export default function Gameboard() {
     if (board[row][col]) {
       const ship = board[row][col]
       ship.hit(ShipService.hitPosition(row, col, board))
+    } else {
+      missedAttacks.push([row, col])
     }
   }
 
