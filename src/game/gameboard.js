@@ -95,5 +95,5 @@ export default function Gameboard() {
 
   placeShipsInitial()
 
-  return { board, receiveAttack }
+  return { board, receiveAttack, missedAttacks }
 }

@@ -30,6 +30,24 @@ describe('Gameboard factory function', () => {
     gameBoard.receiveAttack(shipRow, shipCol)
     expect(ship.hits[ShipService.hitPosition(shipRow, shipCol, gameBoard.board)]).toBe(true)
   })
+
+  test("receiveAttack() function adds to gameBoard's missed attacks", () => {
+    const gameBoard = Gameboard()
+    let [emptyRow, emptyCol] = [undefined, undefined]
+
+    outerLoop: for (let row = 0; row < gameBoard.board.length; row++) {
+      for (let col = 0; col < gameBoard.board[0].length; col++) {
+        if (!gameBoard.board[row][col]) {
+          emptyRow = row
+          emptyCol = col
+          break outerLoop
+        }
+      }
+    }
+
+    gameBoard.receiveAttack(emptyRow, emptyCol)
+    expect(gameBoard.missedAttacks).toEqual([[emptyRow, emptyCol]])
+  })
 })
 
 describe('GameboardService module', () => {
