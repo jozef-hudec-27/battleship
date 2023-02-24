@@ -81,4 +81,15 @@ describe('GameboardService module', () => {
     ]
     expect(GameboardService.allShipsSunkIn(gameBoard.board)).toBe(true)
   })
+
+  test('alreadyAttacked() function returns false if position has not been hit', () => {
+    const gameBoard = Gameboard()
+    expect(GameboardService.alreadyAttacked(0, 0, gameBoard)).toBe(false)
+  })
+
+  test('alreadyAttacked() function returns true if position has already been hit', () => {
+    const gameBoard = Gameboard()
+    gameBoard.receiveAttack(0, 0)
+    expect(GameboardService.alreadyAttacked(0, 0, gameBoard)).toBe(true)
+  })
 })

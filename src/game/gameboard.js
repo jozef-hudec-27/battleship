@@ -43,7 +43,26 @@ export const GameboardService = (() => {
     return true
   }
 
-  return { display, positionValidFor, allShipsSunkIn }
+  const alreadyAttacked = (row, col, board) => {
+    const attacks = board.allAttacks
+
+    for (let i = 0; i < attacks.length; i++) {
+      const [r, c] = attacks[i]
+
+      if (r === row && c === col) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  return {
+    display,
+    positionValidFor,
+    allShipsSunkIn,
+    alreadyAttacked,
+  }
 })()
 
 export default function Gameboard() {
@@ -61,6 +80,7 @@ export default function Gameboard() {
   ]
 
   const missedAttacks = []
+  const allAttacks = []
 
   const placeShip = (ship) => {
     let row = Math.floor(Math.random() * 10)
@@ -85,6 +105,8 @@ export default function Gameboard() {
   }
 
   const receiveAttack = (row, col) => {
+    allAttacks.push([row, col])
+
     if (board[row][col]) {
       const ship = board[row][col]
       ship.hit(ShipService.hitPosition(row, col, board))
@@ -95,5 +117,10 @@ export default function Gameboard() {
 
   placeShipsInitial()
 
-  return { board, receiveAttack, missedAttacks }
+  return {
+    board,
+    receiveAttack,
+    missedAttacks,
+    allAttacks,
+  }
 }
