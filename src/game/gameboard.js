@@ -1,6 +1,6 @@
 /* eslint-disable operator-linebreak */
 
-import Ship, { ShipService } from './ship'
+import Ship, { ShipService } from './ship.js'
 
 export const GameboardService = (() => {
   const display = (board) => board.map((boardRow) => boardRow.map((pos) => (pos === 0 ? 0 : 1)))

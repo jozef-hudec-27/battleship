@@ -1,12 +1,14 @@
-const path = require('path')
+// const path = require('path')
+import path from 'path'
 
-module.exports = {
+export default {
   mode: 'development',
   entry: './src/index.js',
   devtool: 'inline-source-map',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    // path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(new URL('.', import.meta.url).pathname, 'dist'),
   },
   devServer: {
     static: './dist',

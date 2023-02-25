@@ -1,0 +1,50 @@
+@use 'config';
+
+body {
+  margin: 0;
+}
+
+#main {
+  display: flex;
+  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+[class$='-board'] {
+  // human-board, computer-board
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .row {
+    display: flex;
+    gap: 2px;
+  }
+
+  button {
+    @extend %reset-appearance;
+    width: 4vw;
+    height: 4vw;
+    border: 1px solid black;
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+      background-color: grey;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  #main {
+    flex-direction: column;
+  }
+
+  [class$='-board'] button {
+    width: 8vw;
+    height: 8vw;
+  }
+}

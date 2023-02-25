@@ -1,5 +1,5 @@
-import { GameService } from './game'
-import Gameboard from './gameboard'
+import { GameService } from './game.js'
+import Gameboard from './gameboard.js'
 
 export default function Player(gameBoard = Gameboard()) {
   function play(game, row, col) {

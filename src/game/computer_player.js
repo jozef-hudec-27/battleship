@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 
-import Gameboard, { GameboardService } from './gameboard'
-import { GameService } from './game'
+import Gameboard, { GameboardService } from './gameboard.js'
+import { GameService } from './game.js'
 
 export default function ComputerPlayer(gameBoard = Gameboard()) {
   function randomPlay(game) {
