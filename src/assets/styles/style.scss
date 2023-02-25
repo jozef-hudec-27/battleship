@@ -6,7 +6,6 @@ body {
 
 #main {
   display: flex;
-  border: 1px solid red;
   justify-content: center;
   align-items: center;
   gap: 24px;
@@ -31,9 +30,30 @@ body {
     border: 1px solid black;
     border-radius: 4px;
 
-    &:hover,
-    &:focus {
-      background-color: grey;
+    &.attacked {
+      &::after {
+        content: 'X';
+        color: rgb(50, 50, 50);
+      }
+    }
+  }
+
+  // HUMAN
+  &:nth-of-type(1) {
+    button.has-ship {
+      background-color: lightblue;
+    }
+  }
+
+  // COMPUTER
+  &:nth-of-type(2) {
+    button:hover,
+    button:focus {
+      background-color: lightgrey;
+    }
+
+    button.has-ship {
+      background-color: lightcoral;
     }
   }
 }

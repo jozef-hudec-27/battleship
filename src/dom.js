@@ -26,7 +26,7 @@ export const DomGame = (() => {
 
       for (let col = 0; col < board[0].length; col++) {
         const tileBtn = DomController.newElement('button')
-        tileBtn.dataset.position = `${row}_${col}`
+        tileBtn.id = `${name}_${row}_${col}`
         rowEl.appendChild(tileBtn)
       }
 

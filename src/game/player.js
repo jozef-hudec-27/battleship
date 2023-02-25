@@ -1,11 +1,11 @@
 import { GameService } from './game.js'
 import Gameboard from './gameboard.js'
 
-export default function Player(gameBoard = Gameboard()) {
+export default function Player(name, gameBoard = Gameboard()) {
   function play(game, row, col) {
     const enemyBoard = GameService.otherPlayerThan(this, game).gameBoard
-    enemyBoard.receiveAttack(row, col)
+    return enemyBoard.receiveAttack(row, col)
   }
 
-  return { gameBoard, play }
+  return { name, gameBoard, play }
 }

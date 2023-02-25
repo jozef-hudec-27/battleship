@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
-import Game from '../game/game'
+import Game, { GameService } from '../game/game'
+import Player from '../game/player'
 
 describe('Game factory function', () => {
   test('getRound() function returns the correct round', () => {
@@ -13,5 +14,14 @@ describe('Game factory function', () => {
     const prevRound = game.getRound()
     game.nextRound()
     expect(game.getRound()).toBe(prevRound + 1)
+  })
+})
+
+describe('GameService module', () => {
+  test('gameOverIn() function returns false if game is not over', () => {
+    const p1 = Player('p1')
+    const p2 = Player('p2')
+    const game = Game(p1, p2)
+    expect(GameService.isGameOverIn(game)).toBe(false)
   })
 })

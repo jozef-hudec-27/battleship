@@ -3,7 +3,7 @@
 import Gameboard, { GameboardService } from './gameboard.js'
 import { GameService } from './game.js'
 
-export default function ComputerPlayer(gameBoard = Gameboard()) {
+export default function ComputerPlayer(name, gameBoard = Gameboard()) {
   function randomPlay(game) {
     const enemyBoard = GameService.otherPlayerThan(this, game).gameBoard
     const randomRow = Math.floor(Math.random() * enemyBoard.board.length)
@@ -16,5 +16,5 @@ export default function ComputerPlayer(gameBoard = Gameboard()) {
     }
   }
 
-  return { gameBoard, randomPlay }
+  return { name, gameBoard, randomPlay }
 }

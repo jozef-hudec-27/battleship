@@ -104,7 +104,9 @@ export default function Gameboard() {
     })
   }
 
-  const receiveAttack = (row, col) => {
+  function receiveAttack(row, col) {
+    if (GameboardService.alreadyAttacked(row, col, this)) return false
+
     allAttacks.push([row, col])
 
     if (board[row][col]) {
@@ -113,6 +115,8 @@ export default function Gameboard() {
     } else {
       missedAttacks.push([row, col])
     }
+
+    return true
   }
 
   placeShipsInitial()
