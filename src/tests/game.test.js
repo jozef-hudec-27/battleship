@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
 import Game, { GameService } from '../game/game'
+import { GameboardService } from '../game/gameboard'
 import Player from '../game/player'
 
 describe('Game factory function', () => {

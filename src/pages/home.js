@@ -12,13 +12,13 @@ export default function painHomePage(game) {
       if (GameService.isGameOverIn(game)) { // the player won
         gameOver = true
         DomGame.newRoundUpdate(player1, null, null, player2, row, col)
-        DomController.byId('game-over').textContent = 'YOU WON!'
+        DomGame.displayGameOver(true)
       } else {
         const [randomRow, randomCol] = player2.randomPlay(game)
 
         if (GameService.isGameOverIn(game)) { // the computer won
           gameOver = true
-          DomController.byId('game-over').textContent = 'THE COMPUTER WON!'
+          DomGame.displayGameOver(false)
         }
 
         DomGame.newRoundUpdate(player1, randomRow, randomCol, player2, row, col)

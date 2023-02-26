@@ -7,11 +7,11 @@ export const ShipService = (() => {
     const shipCoordinates = []
 
     for (let i = 0; i < ship.length; i++) {
-      if (board[row + i * rowOffset]?.[col + i * colOffset]) {
+      if (board[row + i * rowOffset]?.[col + i * colOffset] === ship) {
         shipCoordinates.push([row + i * rowOffset, col + i * colOffset])
       }
 
-      if (board[row - i * rowOffset]?.[col - i * colOffset]) {
+      if (board[row - i * rowOffset]?.[col - i * colOffset] === ship) {
         shipCoordinates.push([row - i * rowOffset, col - i * colOffset])
       }
     }

@@ -37,7 +37,8 @@ export const DomGame = (() => {
   }
 
   const newRoundUpdate = (player1, p1Row, p1Col, player2, p2Row, p2Col) => {
-    if (p1Row && p1Col) { // if they are falsey, the player won therefore the computer can't make a move
+    if (p1Row && p1Col) {
+      // if they are falsey, the player won therefore the computer can't make a move
       // updating the player's board
       const player1TileBtn = DomController.byId(`${player1.name}_${p1Row}_${p1Col}`)
       player1TileBtn.classList.add('attacked')
@@ -50,5 +51,10 @@ export const DomGame = (() => {
     if (player2.gameBoard.board[p2Row][p2Col]) player2TileBtn.classList.add('has-ship')
   }
 
-  return { markupForBoard, newRoundUpdate }
+  const displayGameOver = (isHuman) => {
+    const message = isHuman ? '🎉🎉 You won this battle! 🎉🎉' : '🤖🤖 The computer wins this time! 🤖🤖'
+    DomController.byId('game-over').appendChild(DomController.newElement('h2', '', '', message))
+  }
+
+  return { markupForBoard, newRoundUpdate, displayGameOver }
 })()
