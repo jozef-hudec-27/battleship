@@ -10,10 +10,11 @@ export default function ComputerPlayer(name, gameBoard = Gameboard()) {
     const randomCol = Math.floor(Math.random() * enemyBoard.board[0].length)
 
     if (GameboardService.alreadyAttacked(randomRow, randomCol, enemyBoard)) {
-      randomPlay(game)
-    } else {
-      enemyBoard.receiveAttack(randomRow, randomCol)
+      return randomPlay(game)
     }
+
+    enemyBoard.receiveAttack(randomRow, randomCol)
+    return [randomRow, randomCol]
   }
 
   return { name, gameBoard, randomPlay }

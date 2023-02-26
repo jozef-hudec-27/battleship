@@ -36,5 +36,19 @@ export const DomGame = (() => {
     return boardEl
   }
 
-  return { markupForBoard }
+  const newRoundUpdate = (player1, p1Row, p1Col, player2, p2Row, p2Col) => {
+    if (p1Row && p1Col) { // if they are falsey, the player won therefore the computer can't make a move
+      // updating the player's board
+      const player1TileBtn = DomController.byId(`${player1.name}_${p1Row}_${p1Col}`)
+      player1TileBtn.classList.add('attacked')
+    }
+
+    // updating the computer's board
+    const player2TileBtn = DomController.byId(`${player2.name}_${p2Row}_${p2Col}`)
+    player2TileBtn.classList.add('attacked')
+    player2TileBtn.setAttribute('tabindex', '-1')
+    if (player2.gameBoard.board[p2Row][p2Col]) player2TileBtn.classList.add('has-ship')
+  }
+
+  return { markupForBoard, newRoundUpdate }
 })()
