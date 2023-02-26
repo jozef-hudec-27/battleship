@@ -57,11 +57,14 @@ export const GameboardService = (() => {
     return false
   }
 
+  const aliveShipsOf = (gameBoard) => [...gameBoard.aliveShips]
+
   return {
     display,
     positionValidFor,
     allShipsSunkIn,
     alreadyAttacked,
+    aliveShipsOf,
   }
 })()
 
@@ -81,6 +84,11 @@ export default function Gameboard() {
 
   const missedAttacks = []
   const allAttacks = []
+  const allShips = []
+  const aliveShips = new Set()
+  let lastSunkShip
+
+  const getLastSunkShip = () => lastSunkShip
 
   const placeShip = (ship) => {
     let row = Math.floor(Math.random() * 10)
@@ -101,6 +109,8 @@ export default function Gameboard() {
     shipSizes.forEach((size) => {
       const ship = Ship(size, Math.random() >= 0.5)
       placeShip(ship)
+      allShips.push(ship)
+      aliveShips.add(ship)
     })
   }
 
@@ -112,8 +122,15 @@ export default function Gameboard() {
     if (board[row][col]) {
       const ship = board[row][col]
       ship.hit(ShipService.hitPosition(row, col, board))
+      if (ShipService.isSunk(ship)) {
+        aliveShips.delete(ship)
+        lastSunkShip = ship
+      } else {
+        lastSunkShip = null
+      }
     } else {
       missedAttacks.push([row, col])
+      lastSunkShip = null
     }
 
     return true
@@ -126,5 +143,9 @@ export default function Gameboard() {
     receiveAttack,
     missedAttacks,
     allAttacks,
+    allShips,
+    aliveShips,
+    lastSunkShip,
+    getLastSunkShip,
   }
 }

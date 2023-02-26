@@ -10,6 +10,7 @@ describe('Gameboard factory function', () => {
     expect(gameBoard.board.length).toBe(10)
     expect(gameBoard.board[0].length).toBe(10)
     expect(gameBoard.board.flat().filter((pos) => !!pos === true).length).toBe(20) // places taken up by ships
+    expect(gameBoard.allShips.length).toBe(10)
   })
 
   test("receiveAttack() function adds to ship's hits", () => {
@@ -91,5 +92,26 @@ describe('GameboardService module', () => {
     const gameBoard = Gameboard()
     gameBoard.receiveAttack(0, 0)
     expect(GameboardService.alreadyAttacked(0, 0, gameBoard)).toBe(true)
+  })
+
+  test('aliveShipsOf() function returns all ships if no ship has been sunk', () => {
+    const gameBoard = Gameboard()
+    expect(GameboardService.aliveShipsOf(gameBoard)).toEqual(gameBoard.allShips)
+  })
+
+  test('aliveShipsOf() function returns only ships that have not been sunk', () => {
+    const gameBoard = Gameboard()
+
+    for (let row = 0; row < gameBoard.board.length; row++) {
+      for (let col = 0; col < gameBoard.board[0].length; col++) {
+        const ship = gameBoard.board[row][col]
+
+        if (ship && ship.length === 1) {
+          gameBoard.receiveAttack(row, col)
+        }
+      }
+    }
+
+    expect(GameboardService.aliveShipsOf(gameBoard)).toEqual(gameBoard.allShips.filter((ship) => ship.length > 1))
   })
 })

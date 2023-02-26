@@ -9,14 +9,16 @@ export default function painHomePage(game) {
     if (gameOver) return
 
     if (player1.play(game, row, col)) {
-      if (GameService.isGameOverIn(game)) { // the player won
+      if (GameService.isGameOverIn(game)) {
+        // the player won
         gameOver = true
         DomGame.newRoundUpdate(player1, null, null, player2, row, col)
         DomGame.displayGameOver(true)
       } else {
         const [randomRow, randomCol] = player2.randomPlay(game)
 
-        if (GameService.isGameOverIn(game)) { // the computer won
+        if (GameService.isGameOverIn(game)) {
+          // the computer won
           gameOver = true
           DomGame.displayGameOver(false)
         }
@@ -26,8 +28,14 @@ export default function painHomePage(game) {
     }
   }
 
-  DomController.byId('main').appendChild(DomGame.markupForBoard(player1.gameBoard.board, player1.name))
-  DomController.byId('main').appendChild(DomGame.markupForBoard(player2.gameBoard.board, player2.name))
+  const player1BoardEl = DomGame.markupForBoard(player1.gameBoard.board, player1.name)
+  const player2BoardEl = DomGame.markupForBoard(player2.gameBoard.board, player2.name)
+
+  player1BoardEl.prepend(DomGame.markupForAliveShips(player1))
+  player2BoardEl.prepend(DomGame.markupForAliveShips(player2))
+
+  DomController.byId('main').appendChild(player1BoardEl)
+  DomController.byId('main').appendChild(player2BoardEl)
 
   for (let r = 0; r < player1.gameBoard.board.length; r++) {
     for (let c = 0; c < player1.gameBoard.board[0].length; c++) {

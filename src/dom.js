@@ -1,3 +1,5 @@
+import { GameboardService } from './game/gameboard.js'
+
 export const DomController = (() => {
   const newElement = (type, cls = '', id = '', text = '') => {
     const element = document.createElement(type)
@@ -36,9 +38,43 @@ export const DomGame = (() => {
     return boardEl
   }
 
+  const markupForAliveShips = (player) => {
+    const playerAliveShipsEl = DomController.newElement('div', 'alive-ships')
+    GameboardService.aliveShipsOf(player.gameBoard).forEach((ship) => {
+      const aliveShipEl = DomController.newElement('div', 'alive-ship')
+
+      for (let i = 0; i < ship.length; i++) {
+        const shipBlock = DomController.newElement('span', 'ship-block')
+        aliveShipEl.appendChild(shipBlock)
+      }
+
+      playerAliveShipsEl.appendChild(aliveShipEl)
+    })
+
+    return playerAliveShipsEl
+  }
+
+  const updateAliveShipsFor = (player, aliveShipsEl) => {
+    const lastSunkShip = player.gameBoard.getLastSunkShip()
+    if (lastSunkShip) {
+      Array.from(aliveShipsEl.children).some((aliveShipEl) => {
+        if (aliveShipEl.children.length === lastSunkShip.length) {
+          aliveShipEl.remove()
+          return true
+        }
+
+        return false
+      })
+    }
+  }
+
   const newRoundUpdate = (player1, p1Row, p1Col, player2, p2Row, p2Col) => {
+    const aliveShipsEls = Array.from(document.getElementsByClassName('alive-ships'))
+    updateAliveShipsFor(player1, aliveShipsEls[0])
+    updateAliveShipsFor(player2, aliveShipsEls[1])
+
+    // if p1Row and p1Col are falsey, the player won therefore the computer can't make a move
     if (p1Row && p1Col) {
-      // if they are falsey, the player won therefore the computer can't make a move
       // updating the player's board
       const player1TileBtn = DomController.byId(`${player1.name}_${p1Row}_${p1Col}`)
       player1TileBtn.classList.add('attacked')
@@ -56,5 +92,10 @@ export const DomGame = (() => {
     DomController.byId('game-over').appendChild(DomController.newElement('h2', '', '', message))
   }
 
-  return { markupForBoard, newRoundUpdate, displayGameOver }
+  return {
+    markupForBoard,
+    markupForAliveShips,
+    newRoundUpdate,
+    displayGameOver,
+  }
 })()
