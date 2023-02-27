@@ -19,10 +19,10 @@ export const GameboardService = (() => {
 
       // checking whether it's next to an existing ship
       if (
-        board[row + i * rowOffset + 1]?.[col + i * colOffset] !== 0 ||
-        board[row + i * rowOffset - 1]?.[col + i * colOffset] !== 0 ||
-        board[row + i * rowOffset]?.[col + i * colOffset + 1] !== 0 ||
-        board[row + i * rowOffset]?.[col + i * colOffset - 1] !== 0
+        board[row + i * rowOffset + 1]?.[col + i * colOffset] ||
+        board[row + i * rowOffset - 1]?.[col + i * colOffset] ||
+        board[row + i * rowOffset]?.[col + i * colOffset + 1] ||
+        board[row + i * rowOffset]?.[col + i * colOffset - 1]
       ) {
         return false
       }
@@ -43,8 +43,10 @@ export const GameboardService = (() => {
     return true
   }
 
-  const alreadyAttacked = (row, col, board) => {
-    const attacks = board.allAttacks
+  const alreadyAttacked = (row, col, gameBoard) => {
+    if (row < 0 || row >= gameBoard.board.length || col >= gameBoard.board.length || col < 0) return false
+
+    const attacks = gameBoard.allAttacks
 
     for (let i = 0; i < attacks.length; i++) {
       const [r, c] = attacks[i]
@@ -84,8 +86,11 @@ export default function Gameboard() {
 
   const missedAttacks = []
   const allAttacks = []
+  const hitAttacks = []
+
   const allShips = []
   const aliveShips = new Set()
+
   let lastSunkShip
 
   const getLastSunkShip = () => lastSunkShip
@@ -120,6 +125,7 @@ export default function Gameboard() {
     allAttacks.push([row, col])
 
     if (board[row][col]) {
+      hitAttacks.push([row, col])
       const ship = board[row][col]
       ship.hit(ShipService.hitPosition(row, col, board))
       if (ShipService.isSunk(ship)) {
@@ -143,6 +149,7 @@ export default function Gameboard() {
     receiveAttack,
     missedAttacks,
     allAttacks,
+    hitAttacks,
     allShips,
     aliveShips,
     lastSunkShip,

@@ -74,7 +74,7 @@ export const DomGame = (() => {
     updateAliveShipsFor(player2, aliveShipsEls[1])
 
     // if p1Row and p1Col are falsey, the player won therefore the computer can't make a move
-    if (p1Row && p1Col) {
+    if (p1Row !== null && p1Col !== null) {
       // updating the player's board
       const player1TileBtn = DomController.byId(`${player1.name}_${p1Row}_${p1Col}`)
       player1TileBtn.classList.add('attacked')
