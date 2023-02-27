@@ -16,7 +16,8 @@ export default function painHomePage(game) {
         DomGame.displayGameOver(true)
       } else {
         // const [randomRow, randomCol] = player2.randomPlay(game)
-        const [randomRow, randomCol] = player2.easyAlgoPlay(game)
+        // const [randomRow, randomCol] = player2.easyAlgoPlay(game)
+        const [randomRow, randomCol] = player2.hardAlgoPlay(game)
 
         if (GameService.isGameOverIn(game)) {
           // the computer won

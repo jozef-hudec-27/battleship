@@ -59,6 +59,14 @@ export const GameboardService = (() => {
     return false
   }
 
+  const validToPlay = (row, col, gameBoard) => (
+    !alreadyAttacked(row, col, gameBoard) &&
+    row > -1 &&
+    row < gameBoard.board.length &&
+    col > -1 &&
+    col < gameBoard.board[0].length
+  )
+
   const aliveShipsOf = (gameBoard) => [...gameBoard.aliveShips]
 
   return {
@@ -67,6 +75,7 @@ export const GameboardService = (() => {
     allShipsSunkIn,
     alreadyAttacked,
     aliveShipsOf,
+    validToPlay,
   }
 })()
 
