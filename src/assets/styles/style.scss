@@ -155,6 +155,7 @@ footer {
 @media (max-width: 576px) {
   #main {
     flex-direction: column;
+    align-items: center;
   }
 
   [class$='-board'] button {

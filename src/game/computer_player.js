@@ -34,17 +34,29 @@ export const ComputerPlayerService = (() => {
       if (hitShip.hits.filter((pos) => pos === true).length === 1) {
         // traverse all 4 neighbors
         for (let j = -1; j <= 1; j += 2) {
-          if (GameboardService.validToPlay(hitRow + j, hitCol, gameBoard)) return [hitRow + j, hitCol]
-          if (GameboardService.validToPlay(hitRow, hitCol + j, gameBoard)) return [hitRow, hitCol + j]
+          if (GameboardService.validToPlay(hitRow + j, hitCol, gameBoard)) {
+            if (!GameboardService.neighborsVisibleShip(hitRow + j, hitCol, gameBoard, hitShip)) {
+              return [hitRow + j, hitCol]
+            }
+          }
+
+          if (GameboardService.validToPlay(hitRow, hitCol + j, gameBoard)) {
+            if (!GameboardService.neighborsVisibleShip(hitRow, hitCol + j, gameBoard, hitShip)) {
+              return [hitRow, hitCol + j]
+            }
+          }
         }
       } else {
         // traverse only 2 neighbors in the correct direction (vertical or horizontal)
-        if (hitShip.isVertical) {
-          if (GameboardService.validToPlay(hitRow + 1, hitCol, gameBoard)) return [hitRow + 1, hitCol]
-          if (GameboardService.validToPlay(hitRow - 1, hitCol, gameBoard)) return [hitRow - 1, hitCol]
-        } else {
-          if (GameboardService.validToPlay(hitRow, hitCol + 1, gameBoard)) return [hitRow, hitCol + 1]
-          if (GameboardService.validToPlay(hitRow, hitCol - 1, gameBoard)) return [hitRow, hitCol - 1]
+        const [rowOffset, colOffset] = hitShip.isVertical ? [1, 0] : [0, 1]
+        for (let j = -1; j <= 1; j += 2) {
+          if (GameboardService.validToPlay(hitRow + j * rowOffset, hitCol + j * colOffset, gameBoard)) {
+            if (
+              !GameboardService.neighborsVisibleShip(hitRow + j * rowOffset, hitCol + j * colOffset, gameBoard, hitShip)
+            ) {
+              return [hitRow + j * rowOffset, hitCol + j * colOffset]
+            }
+          }
         }
       }
     }
@@ -65,20 +77,8 @@ export default function ComputerPlayer(name, gameBoard = Gameboard()) {
       return this.randomPlay(game, avoidShips)
     }
 
-    if (avoidShips) {
-      for (let i = -1; i <= 1; i += 2) {
-        const shipRow = randomRow + i
-        const shipCol = randomCol + i
-
-        // Don't attack tile next to a known ship because there cannot be another ship
-        if (
-          (enemyBoard.board[shipRow]?.[randomCol] &&
-            GameboardService.alreadyAttacked(shipRow, randomCol, enemyBoard)) ||
-          (enemyBoard.board[randomRow]?.[shipCol] && GameboardService.alreadyAttacked(randomRow, shipCol, enemyBoard))
-        ) {
-          return this.randomPlay(game, true)
-        }
-      }
+    if (avoidShips && GameboardService.neighborsVisibleShip(randomRow, randomCol, enemyBoard)) {
+      return this.randomPlay(game, true)
     }
 
     enemyBoard.receiveAttack(randomRow, randomCol)

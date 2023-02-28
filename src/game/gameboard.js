@@ -1,4 +1,4 @@
-/* eslint-disable operator-linebreak */
+/* eslint-disable operator-linebreak, implicit-arrow-linebreak */
 
 import Ship, { ShipService } from './ship.js'
 
@@ -59,13 +59,32 @@ export const GameboardService = (() => {
     return false
   }
 
-  const validToPlay = (row, col, gameBoard) => (
+  // Valid coordinates and not already attacked
+  const validToPlay = (row, col, gameBoard) =>
     !alreadyAttacked(row, col, gameBoard) &&
     row > -1 &&
     row < gameBoard.board.length &&
     col > -1 &&
     col < gameBoard.board[0].length
-  )
+
+  const neighborsVisibleShip = (row, col, gameBoard, except = null) => {
+    for (let i = -1; i <= 1; i += 2) {
+      const shipRow = row + i
+      const shipCol = col + i
+
+      const ship1 = gameBoard.board[shipRow]?.[col]
+      const ship2 = gameBoard.board[row]?.[shipCol]
+
+      if (
+        (ship1 && ship1 !== except && alreadyAttacked(shipRow, col, gameBoard)) ||
+        (ship2 && ship2 !== except && alreadyAttacked(row, shipCol, gameBoard))
+      ) {
+        return true
+      }
+    }
+
+    return false
+  }
 
   const aliveShipsOf = (gameBoard) => [...gameBoard.aliveShips]
 
@@ -76,6 +95,7 @@ export const GameboardService = (() => {
     alreadyAttacked,
     aliveShipsOf,
     validToPlay,
+    neighborsVisibleShip,
   }
 })()
 
