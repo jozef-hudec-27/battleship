@@ -92,10 +92,31 @@ export const DomGame = (() => {
     DomController.byId('game-over').appendChild(DomController.newElement('h2', '', '', message))
   }
 
+  const displayUndestroyedShipsOf = (player) => {
+    const shipsCoordinates = []
+    const { gameBoard } = player
+
+    for (let row = 0; row < gameBoard.board.length; row++) {
+      for (let col = 0; col < gameBoard.board[0].length; col++) {
+        if (gameBoard.board[row][col] && !GameboardService.alreadyAttacked(row, col, gameBoard)) {
+          shipsCoordinates.push([row, col])
+        }
+      }
+    }
+
+    for (let i = 0; i < shipsCoordinates.length; i++) {
+      const [row, col] = shipsCoordinates[i]
+      const tileEl = DomController.byId(`${player.name}_${row}_${col}`)
+      tileEl?.classList.add('has-ship')
+      tileEl?.setAttribute('tabindex', '-1')
+    }
+  }
+
   return {
     markupForBoard,
     markupForAliveShips,
     newRoundUpdate,
     displayGameOver,
+    displayUndestroyedShipsOf,
   }
 })()

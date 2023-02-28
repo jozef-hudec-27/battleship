@@ -23,6 +23,7 @@ export default function painHomePage(game) {
           // the computer won
           gameOver = true
           DomGame.displayGameOver(false)
+          DomGame.displayUndestroyedShipsOf(player2)
         }
 
         DomGame.newRoundUpdate(player1, randomRow, randomCol, player2, row, col)
