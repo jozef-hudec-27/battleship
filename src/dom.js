@@ -45,6 +45,7 @@ export const DomGame = (() => {
     const playerAliveShipsEl = DomController.newElement('div', 'alive-ships')
     GameboardService.aliveShipsOf(player.gameBoard).forEach((ship) => {
       const aliveShipEl = DomController.newElement('div', 'alive-ship')
+      aliveShipEl.setAttribute('aria-label', `${player.name} alive ship of length ${ship.length}`)
 
       for (let i = 0; i < ship.length; i++) {
         const shipBlock = DomController.newElement('span', 'ship-block')
@@ -81,13 +82,19 @@ export const DomGame = (() => {
       // updating the player's board
       const player1TileBtn = DomController.byId(`${player1.name}_${p1Row}_${p1Col}`)
       player1TileBtn.classList.add('attacked')
+      player1TileBtn.setAttribute('aria-label', `${player1TileBtn.getAttribute('aria-label')} attacked`)
     }
 
     // updating the computer's board
     const player2TileBtn = DomController.byId(`${player2.name}_${p2Row}_${p2Col}`)
+    if (player2.gameBoard.board[p2Row][p2Col]) {
+      player2TileBtn.classList.add('has-ship')
+      player2TileBtn.setAttribute('aria-label', `${player2TileBtn.getAttribute('aria-label')} with ship`)
+    }
+
     player2TileBtn.classList.add('attacked')
+    player2TileBtn.setAttribute('aria-label', `${player2TileBtn.getAttribute('aria-label')} attacked`)
     player2TileBtn.setAttribute('tabindex', '-1')
-    if (player2.gameBoard.board[p2Row][p2Col]) player2TileBtn.classList.add('has-ship')
   }
 
   const displayGameOver = (isHuman) => {
@@ -119,6 +126,7 @@ export const DomGame = (() => {
       const tileEl = DomController.byId(`${player.name}_${row}_${col}`)
       tileEl?.classList.add('has-ship')
       tileEl?.setAttribute('tabindex', '-1')
+      tileEl?.setAttribute('aria-label', `${tileEl.getAttribute('aria-label')} with ship`)
     }
   }
 

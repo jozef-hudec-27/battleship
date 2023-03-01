@@ -1,4 +1,4 @@
-/* eslint-disable no-extra-semi */
+/* eslint-disable no-extra-semi, import/no-cycle */
 
 import { DomGame, DomController } from '../dom.js'
 import { GameService } from '../game/game.js'
@@ -65,10 +65,15 @@ export default function paintGamePage(game, difficulty) {
     for (let c = 0; c < player1.gameBoard.board[0].length; c++) {
       const player1TileBtn = DomController.byId(`${player1.name}_${r}_${c}`)
       player1TileBtn.setAttribute('tabindex', '-1')
+      player1TileBtn.setAttribute('aria-label', 'My tile')
 
-      if (player1.gameBoard.board[r][c]) player1TileBtn.classList.add('has-ship')
+      if (player1.gameBoard.board[r][c]) {
+        player1TileBtn.classList.add('has-ship')
+        player1TileBtn.setAttribute('aria-label', 'My tile with ship')
+      }
 
       const player2TileBtn = DomController.byId(`${player2.name}_${r}_${c}`)
+      player2TileBtn.setAttribute('aria-label', 'Enemy tile')
       player2TileBtn.addEventListener('click', () => handleTileClick(r, c))
     }
   }
