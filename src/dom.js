@@ -1,4 +1,7 @@
+/* eslint-disable import/no-cycle */
+
 import { GameboardService } from './game/gameboard.js'
+import paintChooseDifficultyPage from './pages/choose_difficulty.js'
 
 export const DomController = (() => {
   const newElement = (type, cls = '', id = '', text = '') => {
@@ -89,7 +92,14 @@ export const DomGame = (() => {
 
   const displayGameOver = (isHuman) => {
     const message = isHuman ? '🎉🎉 You won this battle! 🎉🎉' : '🤖🤖 The computer wins this time! 🤖🤖'
-    DomController.byId('game-over').appendChild(DomController.newElement('h2', '', '', message))
+    const messageEl = DomController.newElement('h2', '', '', message)
+    const playAgainBtn = DomController.newElement('button', '', '', 'Play again')
+    playAgainBtn.addEventListener('click', () => {
+      DomController.byId('content').innerHTML = ''
+      paintChooseDifficultyPage()
+    })
+
+    DomController.addChildrenTo(DomController.byId('game-over'), [messageEl, playAgainBtn])
   }
 
   const displayUndestroyedShipsOf = (player) => {

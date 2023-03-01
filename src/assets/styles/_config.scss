@@ -4,3 +4,15 @@
   outline: none;
   background-color: unset;
 }
+
+%button {
+  @extend %reset-appearance;
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 4px 16px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: capitalize;
+  width: fit-content;
+}

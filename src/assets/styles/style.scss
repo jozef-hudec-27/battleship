@@ -20,6 +20,12 @@ body {
 
 h1,
 h2,
+h3 {
+  font-weight: 500;
+}
+
+h1,
+h2,
 h3,
 h4,
 h5,
@@ -27,6 +33,12 @@ h6,
 a,
 p {
   margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .logo {
@@ -58,7 +70,7 @@ p {
   }
 }
 
-#main {
+#game-boards {
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -125,10 +137,23 @@ p {
 #game-over {
   margin: 16px 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 
   h2 {
     font-size: 2rem;
     font-weight: 500;
+  }
+
+  button {
+    @extend %button;
+
+    &:hover,
+    &:focus {
+      background-color: darken(white, 10%);
+    }
   }
 }
 
@@ -153,7 +178,7 @@ footer {
 }
 
 @media (max-width: 576px) {
-  #main {
+  #game-boards {
     flex-direction: column;
     align-items: center;
   }
@@ -170,5 +195,62 @@ footer {
   .ship-block {
     width: 2vw !important;
     height: 2vw !important;
+  }
+
+  #game-over {
+    margin-bottom: 32px;
+  }
+}
+
+#choose-difficulty {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 10vh;
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+  }
+}
+
+#difficulties {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  .difficulty {
+    button {
+      @extend %button;
+    }
+
+    &.easy button {
+      background-color: lightgreen;
+
+      &:focus,
+      &:hover {
+        background-color: lighten(lightgreen, 10%);
+      }
+    }
+
+    &.medium button {
+      background-color: darken(lightyellow, 10%);
+
+      &:focus,
+      &:hover {
+        background-color: lightyellow;
+      }
+    }
+
+    &.hard button {
+      background-color: lightcoral;
+
+      &:focus,
+      &:hover {
+        background-color: lighten(lightcoral, 10%);
+      }
+    }
   }
 }

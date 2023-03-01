@@ -1,7 +1,14 @@
+/* eslint-disable no-extra-semi */
+
 import { DomGame, DomController } from '../dom.js'
 import { GameService } from '../game/game.js'
 
-export default function painHomePage(game) {
+export default function paintGamePage(game, difficulty) {
+  const contentEl = DomController.byId('content')
+  const gameboardsEl = DomController.newElement('div', '', 'game-boards')
+  const gameOverEl = DomController.newElement('div', '', 'game-over')
+  DomController.addChildrenTo(contentEl, [gameboardsEl, gameOverEl])
+
   const [player1, player2] = [game.player1, game.player2]
   let gameOver = false
 
@@ -15,9 +22,23 @@ export default function painHomePage(game) {
         DomGame.newRoundUpdate(player1, null, null, player2, row, col)
         DomGame.displayGameOver(true)
       } else {
-        // const [randomRow, randomCol] = player2.randomPlay(game)
-        // const [randomRow, randomCol] = player2.easyAlgoPlay(game)
-        const [randomRow, randomCol] = player2.hardAlgoPlay(game)
+        let randomRow
+        let randomCol
+
+        // computer taking turn
+        switch (difficulty) {
+          case 'easy':
+            ;[randomRow, randomCol] = player2.randomPlay(game)
+            break
+          case 'medium':
+            ;[randomRow, randomCol] = player2.easyAlgoPlay(game)
+            break
+          case 'hard':
+            ;[randomRow, randomCol] = player2.hardAlgoPlay(game)
+            break
+          default:
+            ;[randomRow, randomCol] = player2.randomPlay(game)
+        }
 
         if (GameService.isGameOverIn(game)) {
           // the computer won
@@ -37,8 +58,8 @@ export default function painHomePage(game) {
   player1BoardEl.prepend(DomGame.markupForAliveShips(player1))
   player2BoardEl.prepend(DomGame.markupForAliveShips(player2))
 
-  DomController.byId('main').appendChild(player1BoardEl)
-  DomController.byId('main').appendChild(player2BoardEl)
+  DomController.byId('game-boards').appendChild(player1BoardEl)
+  DomController.byId('game-boards').appendChild(player2BoardEl)
 
   for (let r = 0; r < player1.gameBoard.board.length; r++) {
     for (let c = 0; c < player1.gameBoard.board[0].length; c++) {
